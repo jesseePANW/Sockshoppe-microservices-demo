@@ -66,6 +66,8 @@ resource "aws_instance" "k8s-node" {
     command = "ssh -i ${var.private_key_file} -o StrictHostKeyChecking=no ubuntu@${self.private_ip} sudo `cat join.cmd`"
   }
 
+  ebs_optimized = true
+  monitoring = true
 }
 
 resource "aws_instance" "k8s-master" {
@@ -112,6 +114,8 @@ resource "aws_instance" "k8s-master" {
   provisioner "local-exec" {
     command = "scp -i ${var.private_key_file} -o StrictHostKeyChecking=no ubuntu@${self.private_ip}:~/config ~/.kube/"
   }
+  ebs_optimized = true
+  monitoring = true
 }
 
 resource "null_resource" "up" {
